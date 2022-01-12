@@ -13,9 +13,14 @@ SELECT * FROM animals WHERE weight_kg >= 10.4 AND weight_kg <= 17.3;
 /* Complete the transactions and quesries requested in (Milestone 2) */
 
 /* Update species column transaction and rollback */
-BEGIN;
-UPDATE animals SET species = 'unspecified';
+BEGIN; --start transaction
+
+UPDATE animals SET species = 'unspecified'; --update species column
+SELECT species from animals; -- verify that change was made
+
 ROLLBACK;
+
+SELECT species from animals; -- verify that change was undone
 
 /* Update scpecies column completed transaction */
 BEGIN;
@@ -23,10 +28,13 @@ UPDATE animals SET species = 'digimon' WHERE name LIKE '%mon';
 UPDATE animals SET species = 'pokemon' WHERE species IS NULL;
 COMMIT;
 
+SELECT species FROM animals; --verify the change has been made
+
 /* Delete all records from animals table and rollback */
 BEGIN;
 DELETE FROM animals;
 ROLLBACK;
+SELECT * FROM animals; --verify all records have been restored
 
 /* Transaction with savepoint */
 BEGIN;
