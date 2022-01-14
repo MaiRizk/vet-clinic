@@ -60,3 +60,59 @@ SELECT COUNT(*), species.name FROM animals JOIN species ON animals.species_id = 
 SELECT animals.name FROM animals INNER JOIN owners ON animals.owners_id = owners.id WHERE owners.full_name = 'Jennifer Orwell'; AND animals.species_id = (SELECT id FROM species WHERE species.name = 'Digimon');
 SELECT animals.name FROM animals INNER JOIN owners ON animals.owners_id = owners.id WHERE owners.full_name = 'Dean Winchester ' AND animals.escape_attempts = 0;
 SELECT owners.full_name, COUNT(animals) FROM owners INNER JOIN animals ON owners.id = animals.owners_id GROUP BY owners.full_name;
+
+SELECT animals.name, visits.visit_date
+FROM visits
+LEFT JOIN animals ON animals.id = visits.animals_id
+LEFT JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'William Tatcher';
+
+SELECT animals.name
+FROM visits
+JOIN animals ON animals.id = visits.animals_id
+LEFT JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'Stephanie Mendez';
+
+SELECT vets.*,species.name
+FROM vets
+JOIN specializations ON vets.id = specializations.vets_id
+JOIN species ON specializations.species_id = species.id;
+
+SELECT visits.visit_date
+FROM visits
+JOIN animals ON animals.id = visits.animals_id
+JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'Stephanie Mendez'
+AND visit_date BETWEEN '2020-04-01' AND '2020-08-30';
+
+SELECT animals.name, COUNT(animals.name)
+FROM visits
+LEFT JOIN animals ON animals.id = visits.animals_id
+GROUP BY animals.name;
+
+SELECT animals.name, visits.visit_date
+FROM visits
+LEFT JOIN animals ON animals.id = visits.animals_id
+LEFT JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'Maisy Smith';
+
+SELECT animals.*, vets.*, visits.visit_date
+FROM visits
+LEFT JOIN animals ON animals.id = visits.animals_id
+LEFT JOIN vets ON vets.id = visits.vets_id;
+
+
+SELECT count(*)
+FROM visits
+LEFT JOIN animals ON animals.id = visits.animals_id
+LEFT JOIN vets ON vets.id = visits.vets_id
+WHERE animals.species_id NOT IN (SELECT species_id FROM specializations WHERE vets_id = vets.id);
+
+
+SELECT species.name, count(*)
+FROM visits
+LEFT JOIN animals ON animals.id = visits.animals_id
+LEFT JOIN species ON animals.species_id = species.id
+LEFT JOIN vets ON vets.vets_id = visits.vets_id
+WHERE vets.name = 'Maisy Smith'
+GROUP BY species.name
