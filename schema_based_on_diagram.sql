@@ -19,7 +19,7 @@ CREATE TABLE invoices(
     generated_at TIMESTAMP,
     payed_at TIMESTAMP,
     medical_history_id INT,
-    CONSTRAINT fk_medical-medical_history_id
+    CONSTRAINT fk_medical_medical_history_id
     FOREIGN KEY(medical_history_id) REFERENCES medical_histories(id)
 );
 
@@ -41,3 +41,19 @@ CREATE TABLE invoice_items(
     CONSTRAINT fk_treatment_id
     FOREIGN KEY(treatment_id) REFERENCES treatments(id)
 );
+
+CREATE TABLE treatment_history(
+    id INT PRIMARY KEY,
+    treatment_id INT,
+    medical_history_id INT,
+    FOREIGN KEY(treatment_id) REFERENCES treatments(id),
+    FOREIGN KEY(medical_history_id) REFERENCES medical_histories(id),
+    ON DELETE CASCADE
+);
+
+CREATE INDEX ON medical_histories(patient_id);
+CREATE INDEX ON invoices(medical_history_id);
+CREATE INDEX ON invoice_items(invoice_id);
+CREATE INDEX ON invoice_items(treatment_id);
+CREATE INDEX ON treatment_history(treatment_id);
+CREATE INDEX ON treatment_history(medical_history_id);
