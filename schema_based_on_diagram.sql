@@ -22,3 +22,22 @@ CREATE TABLE invoices(
     CONSTRAINT fk_medical-medical_history_id
     FOREIGN KEY(medical_history_id) REFERENCES medical_histories(id)
 );
+
+CREATE TABLE treatments(
+    id INT PRIMARY KEY,
+    type VARCHAR,
+    name VARCHAR
+);
+
+CREATE TABLE invoice_items(
+    id INT PRIMARY KEY,
+    unit_price DECIMAL,
+    quantity INT,
+    total_price DECIMAL,
+    invoice_id INT,
+    CONSTRAINT fk_invoice_id
+    FOREIGN KEY(invoice_id) REFERENCES invoices(id)
+    treatment_id INT,
+    CONSTRAINT fk_treatment_id
+    FOREIGN KEY(treatment_id) REFERENCES treatments(id)
+);
